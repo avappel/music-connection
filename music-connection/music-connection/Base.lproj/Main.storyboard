@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="music_connection" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="elB-CX-wuc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fN0-ph-75Q">
+                                <rect key="frame" x="205" y="-1" width="209" height="897"/>
+                                <color key="backgroundColor" red="0.30196078431372547" green="0.39215686274509803" blue="0.55294117647058827" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Relax">
+                                            <attributes>
+                                                <color key="NSColor" red="0.81568627450980391" green="0.88235294117647056" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                                                <font key="NSFont" size="44" name="SignPainter-HouseScript"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <connections>
+                                    <segue destination="SXk-jh-J1M" kind="show" identifier="showRelax" id="dAe-Nd-Bia"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LKz-Nv-Qcu">
+                                <rect key="frame" x="0.0" y="-1" width="206" height="897"/>
+                                <color key="backgroundColor" red="0.52156862745098043" green="0.11764705882352941" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Active">
+                                            <attributes>
+                                                <color key="NSColor" red="0.87058823529411766" green="0.76470588235294112" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
+                                                <font key="NSFont" size="44" name="SignPainter-HouseScript"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <connections>
+                                    <segue destination="SXk-jh-J1M" kind="show" identifier="showActive" id="c2C-vo-VgK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="fV0-JL-sBI" firstAttribute="trailing" secondItem="fN0-ph-75Q" secondAttribute="trailing" id="3c5-bx-cQQ"/>
+                            <constraint firstItem="fV0-JL-sBI" firstAttribute="top" secondItem="fN0-ph-75Q" secondAttribute="top" id="4tY-By-Jsc"/>
+                            <constraint firstItem="LKz-Nv-Qcu" firstAttribute="width" secondItem="fN0-ph-75Q" secondAttribute="width" multiplier="0.985646" id="6Km-5q-V8r"/>
+                            <constraint firstItem="fV0-JL-sBI" firstAttribute="top" secondItem="LKz-Nv-Qcu" secondAttribute="top" id="BD5-Ps-Hwf"/>
+                            <constraint firstItem="LKz-Nv-Qcu" firstAttribute="leading" secondItem="fV0-JL-sBI" secondAttribute="leading" id="Fxa-G2-8g2"/>
+                            <constraint firstItem="fN0-ph-75Q" firstAttribute="leading" secondItem="LKz-Nv-Qcu" secondAttribute="trailing" id="Isx-In-AH5"/>
+                            <constraint firstItem="fN0-ph-75Q" firstAttribute="bottom" secondItem="fV0-JL-sBI" secondAttribute="bottom" id="fAr-E3-cmu"/>
+                            <constraint firstItem="LKz-Nv-Qcu" firstAttribute="bottom" secondItem="fV0-JL-sBI" secondAttribute="bottom" id="jiL-ZW-g0T"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="fV0-JL-sBI"/>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
+        </scene>
+        <!--Player View Controller-->
+        <scene sceneID="Au1-du-bZQ">
+            <objects>
+                <viewController id="SXk-jh-J1M" customClass="PlayerViewController" customModule="music_connection" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="t1b-Ve-eO6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xqe-K2-lRW">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4IY-ga-PxN">
+                                        <rect key="frame" x="66" y="394" width="293" height="172"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" button="YES" playsSound="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="134"/>
+                                        <state key="normal">
+                                            <color key="titleColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="togglePausePlay:" destination="SXk-jh-J1M" eventType="touchUpInside" id="eUy-BR-Hsn"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Relax" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ol5-Tt-8aR">
+                                        <rect key="frame" x="8" y="245" width="398" height="86"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="SignPainter-HouseScript" family="SignPainter" pointSize="95"/>
+                                        <color key="textColor" red="0.81568627450980391" green="0.88235294117647056" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    </label>
+                                </subviews>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="F6N-rE-7zR"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="oHb-wV-iAc"/>
+                    <connections>
+                        <outlet property="backgroundView" destination="xqe-K2-lRW" id="q05-fu-oDD"/>
+                        <outlet property="playPauseButton" destination="4IY-ga-PxN" id="4W4-eY-osj"/>
+                        <outlet property="textLabel" destination="ol5-Tt-8aR" id="fRJ-tp-KAg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LIu-0a-Nte" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="931.88405797101461" y="137.94642857142856"/>
+        </scene>
+    </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="dAe-Nd-Bia"/>
+    </inferredMetricsTieBreakers>
+</document>
