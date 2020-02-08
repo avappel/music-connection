@@ -44,9 +44,12 @@ class PlayerViewController: UIViewController {
     func play() {
         Sound.enabled = true
         
+        Sound.category = .playback
+        
         switch mode! {
         case .relax:
-            track = Sound(url: URL(fileURLWithPath: "/Users/Alex/Documents/Developer/Music_Connection/music-connection/music-connection/music-connection/Relax.mp3"))
+//            track = Sound(url: URL(fileURLWithPath: "Relax.mp3"))
+            track = Sound(url: Bundle.main.url(forResource: "Relax", withExtension: "mp3")!)
             
             textLabel.text = "Relax"
             
@@ -56,7 +59,8 @@ class PlayerViewController: UIViewController {
         
         case .active:
 //            Sound.play(file: "Active.mp3")
-            track = Sound(url: URL(fileURLWithPath: "/Users/Alex/Documents/Developer/Music_Connection/music-connection/music-connection/music-connection/Active.mp3"))
+//            track = Sound(url: URL(fileURLWithPath: "Active.mp3"))
+            track = Sound(url: Bundle.main.url(forResource: "Active", withExtension: "mp3")!)
             
             textLabel.text = "Active"
             

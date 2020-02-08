@@ -7,4 +7,5 @@ target 'music-connection' do
 
   # Pods for music-connection
   pod 'SwiftySound'
+  pod 'Zip', '~> 1.1'
 end

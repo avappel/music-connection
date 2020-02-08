@@ -16,6 +16,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+
+    }
+    
+    @objc func appMovedToBackground() {
+        print("App moved to background!")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

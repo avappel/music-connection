@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Zip
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,7 +32,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+    
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+      let needTo = url.startAccessingSecurityScopedResource()
+        print("here")
+      do {
+        let data = try Data(contentsOf: url)
+        let contents = String(
+          data: data,
+          encoding: String.Encoding.utf8
+        )
 
+        print(contents)
+      } catch(let error) { print(error) }
 
+      if needTo {
+        url.stopAccessingSecurityScopedResource()
+      }
+
+      return true
+    }
+    
+//    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+//
+//        print("here")
+//        return true
+//
+////        let needTo = url.startAccessingSecurityScopedResource()
+////
+////        do {
+//////            let data = try Data(contentsOf: url)
+//////            let contents = String(data: data, encoding: String.Encoding.utf8)
+////            let unzipDirectory = try Zip.quickUnzipFile(url) // Unzip
+////
+////            print(unzipDirectory.absoluteString)
+////
+////        } catch(let error) {
+////            print(error)
+////        }
+////
+////        if needTo {
+////            url.stopAccessingSecurityScopedResource()
+////        }
+////
+////        return true
+//    }
 }
-
