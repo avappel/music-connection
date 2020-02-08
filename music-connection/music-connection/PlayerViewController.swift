@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftySound
+import AVFoundation
 
 class PlayerViewController: UIViewController {
     enum Mode {
@@ -34,6 +35,9 @@ class PlayerViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        Sound.enabled = true
+        try! AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
+
         playPauseButton.setTitle("▶",for: .normal)
 
         switch mode! {
@@ -49,16 +53,16 @@ class PlayerViewController: UIViewController {
             textLabel.textColor = UIColor(red: 222/255, green: 195/255, blue: 195/255, alpha: 1.0)
             playPauseButton.setTitleColor(UIColor(red: 232/255, green: 195/255, blue: 195/255, alpha: 1.0), for: .normal)
         }
+
         track = Sound(url: mode.url)
+        track.prepare()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         Sound.enabled = false
-        Sound.stopAll()
     }
 
     func play() {
-        Sound.category = .playback
         track.play(numberOfLoops: -1)
     }
 
