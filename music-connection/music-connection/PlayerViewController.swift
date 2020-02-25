@@ -9,19 +9,33 @@
 import UIKit
 import SwiftySound
 import AVFoundation
+var audioPlayer:AVAudioPlayer!
 
 class PlayerViewController: UIViewController {
+    
     enum Mode {
         case relax
         case active
-
-        var url: URL {
+        
+        var lastComponentURL: String {
             switch self {
-            case .relax: return Bundle.main.url(forResource: "Relax", withExtension: "mp3")!
-            case .active: return Bundle.main.url(forResource: "Active", withExtension: "mp3")!
+            case .relax: return "Relax.mp3"
+            case .active: return "Active.mp3"
             }
         }
+        
+//        var url: URL {
+//            switch self {
+//            case .relax: return URL.init(fileURLWithPath: "/Relax.mp3")
+//            case .active: return URL.init(fileURLWithPath: "/Active.mp3")
+////            case .relax: return UserDefaults.standard.url(forKey: "relaxURL") ?? URL.init(fileURLWithPath: "")
+////            case .active: return UserDefaults.standard.url(forKey: "activeURL") ?? URL.init(fileURLWithPath: "")
+////            case .relax: return Bundle.main.url(forResource: "Relax", withExtension: "mp3")!
+////            case .active: return Bundle.main.url(forResource: "Active", withExtension: "mp3")!
+//            }
+//        }
     }
+    
 
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var playPauseButton: UIButton!
@@ -29,6 +43,7 @@ class PlayerViewController: UIViewController {
 
     var track: Sound!
     var mode: Mode!
+
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -53,9 +68,31 @@ class PlayerViewController: UIViewController {
             textLabel.textColor = UIColor(red: 222/255, green: 195/255, blue: 195/255, alpha: 1.0)
             playPauseButton.setTitleColor(UIColor(red: 232/255, green: 195/255, blue: 195/255, alpha: 1.0), for: .normal)
         }
-
-        track = Sound(url: mode.url)
-        track.prepare()
+        
+//        track = Sound(url: mode.url)
+//        track.prepare()
+        
+        // Create document folder url
+        let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        
+        // Create destination file url
+        let destinationURL = documentsDirectoryURL.appendingPathComponent(mode.lastComponentURL)
+        
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: destinationURL)
+            guard let player = audioPlayer else {
+                print("something wrong with player")
+                return
+                
+            }
+            
+            player.prepareToPlay()
+            player.play()
+            print("Should be playing by now")
+        } catch let error {
+            print("Error")
+            print(error.localizedDescription)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,13 +108,19 @@ class PlayerViewController: UIViewController {
     }
 
     @IBAction func togglePausePlay(_ sender: Any) {
-        if track.paused {
-            if track.resume() {
-                playPauseButton.setTitle("❚❚",for: .normal)
-            }
-        } else {
-            track.pause()
-            playPauseButton.setTitle("▶",for: .normal)
-        }
+//        if track.paused {
+//            if track.resume() {
+//                playPauseButton.setTitle("❚❚",for: .normal)
+//            }
+//        } else {
+//            track.pause()
+//            playPauseButton.setTitle("▶",for: .normal)
+//        }
+        
+        if  audioPlayer.isPlaying{
+            audioPlayer.pause()
+        }else{
+         audioPlayer.play()
+         }
     }
 }

@@ -18,7 +18,26 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
-
+        
+        if UserDefaults.standard.url(forKey: "relaxURL") == nil ||  UserDefaults.standard.url(forKey: "activeURL") == nil {
+            // create the alert
+            let alert = UIAlertController(title: "My Title", message: "This is my message.", preferredStyle: UIAlertController.Style.alert)
+            // add an action (button)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if UserDefaults.standard.url(forKey: "relaxURL") == nil ||  UserDefaults.standard.url(forKey: "activeURL") == nil {
+            // create the alert
+            let alert = UIAlertController(title: "My Title", message: "This is my message.", preferredStyle: UIAlertController.Style.alert)
+            // add an action (button)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc func appMovedToBackground() {
