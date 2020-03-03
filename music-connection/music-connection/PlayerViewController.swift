@@ -9,7 +9,7 @@
 import UIKit
 import SwiftySound
 import AVFoundation
-var audioPlayer:AVAudioPlayer!
+import MediaPlayer
 
 class PlayerViewController: UIViewController {
     
@@ -17,23 +17,19 @@ class PlayerViewController: UIViewController {
         case relax
         case active
         
-        var lastComponentURL: String {
+        var url: URL {
             switch self {
-            case .relax: return "Relax.mp3"
-            case .active: return "Active.mp3"
+            case .relax: return UserDefaults.standard.url(forKey: "relaxURL") ?? URL.init(fileURLWithPath: "")
+            case .active: return UserDefaults.standard.url(forKey: "activeURL") ?? URL.init(fileURLWithPath: "")
             }
         }
         
-//        var url: URL {
-//            switch self {
-//            case .relax: return URL.init(fileURLWithPath: "/Relax.mp3")
-//            case .active: return URL.init(fileURLWithPath: "/Active.mp3")
-////            case .relax: return UserDefaults.standard.url(forKey: "relaxURL") ?? URL.init(fileURLWithPath: "")
-////            case .active: return UserDefaults.standard.url(forKey: "activeURL") ?? URL.init(fileURLWithPath: "")
-////            case .relax: return Bundle.main.url(forResource: "Relax", withExtension: "mp3")!
-////            case .active: return Bundle.main.url(forResource: "Active", withExtension: "mp3")!
-//            }
-//        }
+        var title: String {
+            switch self {
+            case .relax: return "Relax Soundtrack"
+            case .active: return "Active Soundtrack"
+            }
+        }
     }
     
 
@@ -43,6 +39,8 @@ class PlayerViewController: UIViewController {
 
     var track: Sound!
     var mode: Mode!
+    
+    var audioPlayer:AVAudioPlayer!
 
 
     override var prefersStatusBarHidden: Bool {
@@ -51,9 +49,12 @@ class PlayerViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         Sound.enabled = true
-        try! AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
+        try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+//        try! AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
+        UIApplication.shared.beginReceivingRemoteControlEvents()
 
-        playPauseButton.setTitle("▶",for: .normal)
+        playPauseButton.setTitle("❚❚",for: UIControl.State.normal)
+
 
         switch mode! {
         case .relax:
@@ -69,58 +70,110 @@ class PlayerViewController: UIViewController {
             playPauseButton.setTitleColor(UIColor(red: 232/255, green: 195/255, blue: 195/255, alpha: 1.0), for: .normal)
         }
         
-//        track = Sound(url: mode.url)
-//        track.prepare()
-        
-        // Create document folder url
-        let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        
-        // Create destination file url
-        let destinationURL = documentsDirectoryURL.appendingPathComponent(mode.lastComponentURL)
-        
         do {
-            audioPlayer = try AVAudioPlayer(contentsOf: destinationURL)
-            guard let player = audioPlayer else {
-                print("something wrong with player")
+            self.audioPlayer = try AVAudioPlayer(contentsOf: mode.url)
+            guard let player = self.audioPlayer else {
+                print("Error with player")
                 return
-                
             }
-            
             player.prepareToPlay()
-            player.play()
-            print("Should be playing by now")
+            play()
+            setupRemoteTransportControls()
         } catch let error {
-            print("Error")
+            print("Error with playback")
             print(error.localizedDescription)
         }
+        
+        updateNowPlaying()
+        updateUI()
+    }
+    
+    func updateUI() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            if self.audioPlayer.isPlaying {
+                self.playPauseButton.setTitle("❚❚",for: UIControl.State.normal)
+            }
+            else {
+                self.playPauseButton.setTitle("▶",for: UIControl.State.normal)
+            }
+            
+            self.updateUI()
+        })
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         Sound.enabled = false
     }
 
-    func play() {
-        track.play(numberOfLoops: -1)
-    }
+//    func play() {
+//        track.play(numberOfLoops: -1)
+//    }
 
     @IBAction func didEdgePan(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func togglePausePlay(_ sender: Any) {
-//        if track.paused {
-//            if track.resume() {
-//                playPauseButton.setTitle("❚❚",for: .normal)
-//            }
-//        } else {
-//            track.pause()
-//            playPauseButton.setTitle("▶",for: .normal)
-//        }
+        if self.audioPlayer.isPlaying {
+            pause()
+        }
+        else {
+            play()
+        }
+    }
         
-        if  audioPlayer.isPlaying{
-            audioPlayer.pause()
-        }else{
-         audioPlayer.play()
-         }
+    func setupRemoteTransportControls() {
+        print("in setup")
+        
+        // Get the shared MPRemoteCommandCenter
+        let commandCenter = MPRemoteCommandCenter.shared()
+
+        // Add handler for Play Command
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            print("Play command - is playing: \(self.audioPlayer.isPlaying)")
+            if !self.audioPlayer.isPlaying {
+                self.audioPlayer.play()
+                return .success
+            }
+            return .commandFailed
+        }
+
+        // Add handler for Pause Command
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            print("Pause command - is playing: \(self.audioPlayer.isPlaying)")
+            if self.audioPlayer.isPlaying {
+                self.audioPlayer.pause()
+                return .success
+            }
+            return .commandFailed
+        }
+    }
+
+    func play() {
+        self.audioPlayer.play()
+        playPauseButton.setTitle("❚❚",for: UIControl.State.normal)
+        updateNowPlaying()
+        print("Play - current time: \(audioPlayer.currentTime) - is playing: \(self.audioPlayer.isPlaying)")
+    }
+
+    func pause() {
+        self.audioPlayer.pause()
+        playPauseButton.setTitle("▶",for: UIControl.State.normal)
+        updateNowPlaying()
+        print("Pause - current time: \(self.audioPlayer.currentTime) - is playing: \(self.audioPlayer.isPlaying)")
+    }
+
+    func updateNowPlaying() {
+        
+        var nowPlayingInfo = [String : Any]()
+        
+        nowPlayingInfo[MPMediaItemPropertyTitle] = mode.title
+
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.audioPlayer.currentTime
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = self.audioPlayer.duration
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.audioPlayer.rate
+
+        // Set the metadata
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
 }
